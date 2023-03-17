@@ -15,7 +15,7 @@
 # specific language governing permissions and limitations
 # under the License.
 
-FROM ubuntu:focal as build
+FROM ubuntu:latest as build
 
 ARG MORE_BUILD_ARGS
 
@@ -27,9 +27,10 @@ RUN apt update && apt install -y git gcc g++ make cmake autoconf automake libtoo
 WORKDIR /kvrocks
 
 COPY . .
-RUN ./x.py build --ghproxy  -DENABLE_OPENSSL=ON -DPORTABLE=ON $MORE_BUILD_ARGS
+RUN ./x.py build -DENABLE_OPENSSL=ON -DPORTABLE=ON $MORE_BUILD_ARGS
+RUN strip -g /kvrocks/build/kvrocks
 
-FROM ubuntu:focal
+FROM ubuntu:latest
 
 RUN apt update && apt install -y libssl-dev
 
